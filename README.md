@@ -20,9 +20,9 @@ This project trains three generative models — Flow Matching with OT paths, a d
 
 - Custom explicit finite-difference solver for the 1D viscous Burgers' equation, generating a synthetic dataset from randomized smooth initial conditions
 - Three generative model variants trained under an identical architecture and training loop for a fair comparison:
-  - **Baseline Flow Matching** — conditional Optimal Transport (straight-line) paths
-  - **Diffusion baseline** — standard variance-preserving noising path, as a special case of the same framework
-  - **Physics-regularized Flow Matching** — OT paths plus a soft penalty enforcing consistency of a conserved quantity (total field mass) along the training trajectory
+  - **Baseline Flow Matching**  conditional Optimal Transport (straight-line) paths
+  - **Diffusion baseline**  standard variance-preserving noising path, as a special case of the same framework
+  - **Physics-regularized Flow Matching**  OT paths plus a soft penalty enforcing consistency of a conserved quantity (total field mass) along the training trajectory
 - Simulation-free vector-field regression training (no ODE solving required during training)
 - Euler-integrator sampling at two step counts (5 and 50) to directly test the Number-of-Function-Evaluations (NFE) efficiency claim from the Flow Matching paper
 - Physical-consistency evaluation: comparing the distribution of a conserved quantity (mass/field integral) between real data and generated samples
@@ -66,24 +66,7 @@ Finite-difference Burgers' solver  →  synthetic dataset of PDE final states
 
 ---
 
-## 📁 Project Structure
 
-```text
-.
-├── flow_matching_burgers_pde_generation.ipynb
-├── results/
-│   ├── evaluation_summary_table.csv
-│   └── evaluation_summary_table.tex
-├── figures/
-│   ├── example_initial_and_final_states.png
-│   ├── loss_curves_all_models.png
-│   ├── generated_samples_5_vs_50_steps.png
-│   ├── physical_consistency_mass_histogram.png
-│   └── sampling_efficiency_nfe_curve.png
-└── README.md
-```
-
----
 
 ## 🚀 Quick Start
 
@@ -92,7 +75,7 @@ Finite-difference Burgers' solver  →  synthetic dataset of PDE final states
 - No local GPU required
 
 ### 2) Open in Colab
-Open `flow_matching_burgers_pde_generation.ipynb` in Google Colab and run cells top to bottom. All data is generated synthetically inside the notebook — no external downloads are required.
+Open `flow_matching_burgers_pde_generation.ipynb` in Google Colab and run cells top to bottom. All data is generated synthetically inside the notebook  no external downloads are required.
 
 ### 3) Configuration
 Key flags near the top of the notebook:
@@ -107,7 +90,7 @@ seed = 42
 ```
 
 ### 4) Outputs
-All tables and figures are generated inline in the notebook. Export cells write summary tables and figures to `results/` and `figures/` for inclusion in this README.
+All tables and figures are generated inline in the notebook. 
 
 ---
 
@@ -117,13 +100,13 @@ All tables and figures are generated inline in the notebook. Export cells write 
 
 ### Example data: initial conditions and evolved Burgers' states
 
-<!-- PLACEHOLDER: insert example_initial_and_final_states.png -->
-`figures/example_initial_and_final_states.png`
+<img width="1187" height="495" alt="image" src="https://github.com/user-attachments/assets/015a8c33-c828-429a-80ad-0590733ce5b3" />
+
 
 ### Training loss curves
 
-<!-- PLACEHOLDER: insert loss_curves_all_models.png -->
-`figures/loss_curves_all_models.png`
+<img width="613" height="393" alt="image" src="https://github.com/user-attachments/assets/2ff06be6-bcd1-41a8-8177-7c985dc016b3" />
+
 
 All three models converge smoothly with no instability. Baseline FM reaches the lowest training loss, Diffusion the highest, and Physics FM sits in between — consistent with Diffusion's harder curved-path target and Physics FM's extra penalty term competing with the main regression objective.
 
@@ -137,8 +120,8 @@ All three models converge smoothly with no instability. Baseline FM reaches the 
 
 Physics FM produces the best generation quality at both step counts. Contrary to the standard Flow Matching claim, **quality did not improve with more sampling steps for any model** — all three got worse going from 5 to 50 Euler steps. This inversion persisted after scaling from 600 to 3000 training samples, suggesting it is a real property of this Euler-sampling setup rather than small-sample noise, and is flagged as an open question rather than explained away (see [Limitations](#️-limitations--future-work)).
 
-<!-- PLACEHOLDER: insert sampling_efficiency_nfe_curve.png -->
-`figures/sampling_efficiency_nfe_curve.png`
+<img width="622" height="398" alt="image" src="https://github.com/user-attachments/assets/6d1728c6-1e75-406e-baf4-f8a12826bf1f" />
+
 
 ### Physical consistency (mass/field-integral deviation from real data, lower is better)
 
@@ -150,13 +133,13 @@ Physics FM produces the best generation quality at both step counts. Contrary to
 
 Physics-regularized FM gives the clearest physical-consistency advantage in the more-accurate 50-step sampling regime, but does not clearly outperform the other models at fast 5-step sampling. The physics penalty's benefit is therefore step-count-dependent in this run rather than a uniform win, which is reported here as the honest finding rather than smoothed into an unqualified claim.
 
-<!-- PLACEHOLDER: insert physical_consistency_mass_histogram.png -->
-`figures/physical_consistency_mass_histogram.png`
+<img width="678" height="470" alt="image" src="https://github.com/user-attachments/assets/377f3d07-a191-4ff0-8de4-811abbebb8e0" />
+
 
 ### Example generated samples
 
-<!-- PLACEHOLDER: insert generated_samples_5_vs_50_steps.png -->
-`figures/generated_samples_5_vs_50_steps.png`
+<img width="989" height="790" alt="image" src="https://github.com/user-attachments/assets/6dd0bad6-cd5a-4f34-8d4f-28a9eaa643ae" />
+
 
 Generated states from all three models are visibly rougher than real Burgers' solutions at this model size and training budget — the physical-consistency results above should be read as "closer to correct," not "correct."
 
@@ -168,7 +151,7 @@ Generated states from all three models are visibly rougher than real Burgers' so
 - Only the **1D viscous Burgers' equation** is studied, with a hand-written first-order explicit finite-difference solver rather than a validated reference solver or real benchmark data (e.g., PDEBench); findings may not transfer to 2D systems (Navier-Stokes, climate/fluid data) without further validation.
 - The model generates **unconditional final states** only — it is not conditioned on the initial condition, so it does not yet model the initial-condition-to-outcome mapping directly.
 - The physics-consistency penalty enforces a single, simple constraint (total field mass/integral) rather than a full conservation law or PDE residual; it is a proof-of-concept regularizer, not a physically rigorous constraint.
-- The 5→50 sampling-step quality inversion (all models perform worse with more Euler steps) is an open, unresolved finding. It survived a 5x increase in dataset size, which argues against pure sampling noise, but it has not been root-caused — candidate explanations include the fixed-step Euler integrator amplifying per-step error, or the generation-quality metric itself being unstable at this data/model scale. This should be investigated (e.g., with an adaptive-step or RK4 integrator) before drawing strong conclusions.
+- The 5→50 sampling-step quality inversion (all models perform worse with more Euler steps) is an open, unresolved finding. It survived a 5x increase in dataset size, which argues against pure sampling noise, but it has not been root-caused, candidate explanations include the fixed-step Euler integrator amplifying per-step error, or the generation-quality metric itself being unstable at this data/model scale. This should be investigated (e.g., with an adaptive-step or RK4 integrator) before drawing strong conclusions.
 - Planned next steps (pending additional compute): condition generation on initial states, multi-seed runs with significance testing, stronger architectures (e.g., FNO or U-Net backbones), a proper PDE residual loss instead of the endpoint-mass penalty, and extension to 2D Navier-Stokes data from PDEBench.
 
 ---
