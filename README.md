@@ -10,9 +10,9 @@
 
 **Research question:** do straight-line Optimal Transport paths in Flow Matching preserve physical consistency when generating PDE states, or does a lightweight physics-informed training penalty measurably improve it?
 
-This project trains three generative models — Flow Matching with OT paths, a diffusion baseline, and a physics-regularized Flow Matching variant — to generate final-state solutions of the 1D viscous Burgers' equation from synthetically generated initial conditions. It goes beyond standard generation-quality reporting to ask whether the generated states respect an approximate physical conservation property, and whether Flow Matching's fewer-sampling-steps advantage over diffusion actually holds in practice.
+This project trains three generative models Flow Matching with OT paths, a diffusion baseline, and a physics-regularized Flow Matching variant to generate final-state solutions of the 1D viscous Burgers' equation from synthetically generated initial conditions. It goes beyond standard generation-quality reporting to ask whether the generated states respect an approximate physical conservation property, and whether Flow Matching's fewer-sampling-steps advantage over diffusion actually holds in practice.
 
-> This is a first, single-seed, Colab-scale iteration on a synthetic 1D toy PDE. The pipeline is designed to extend to 2D systems, real PDE benchmarks (e.g., PDEBench), and multi-seed evaluation with additional compute — see [Limitations](#️-limitations--future-work).
+> This is a first, single-seed, Colab-scale iteration on a synthetic 1D toy PDE. The pipeline is designed to extend to 2D systems, real PDE benchmarks (e.g., PDEBench), and multi-seed evaluation with additional compute see [Limitations](#️-limitations--future-work).
 
 ---
 
@@ -141,13 +141,13 @@ Physics-regularized FM gives the clearest physical-consistency advantage in the 
 <img width="989" height="790" alt="image" src="https://github.com/user-attachments/assets/6dd0bad6-cd5a-4f34-8d4f-28a9eaa643ae" />
 
 
-Generated states from all three models are visibly rougher than real Burgers' solutions at this model size and training budget — the physical-consistency results above should be read as "closer to correct," not "correct."
+Generated states from all three models are visibly rougher than real Burgers' solutions at this model size and training budget the physical-consistency results above should be read as "closer to correct," not "correct."
 
 ---
 
 ## ⚠️ Limitations & Future Work
 
-- Results are reported for a **single seed** (42); multi-seed variance estimation is left for future work.
+- Results are reported for a **single seed** (7); multi-seed variance estimation is left for future work.
 - Only the **1D viscous Burgers' equation** is studied, with a hand-written first-order explicit finite-difference solver rather than a validated reference solver or real benchmark data (e.g., PDEBench); findings may not transfer to 2D systems (Navier-Stokes, climate/fluid data) without further validation.
 - The model generates **unconditional final states** only — it is not conditioned on the initial condition, so it does not yet model the initial-condition-to-outcome mapping directly.
 - The physics-consistency penalty enforces a single, simple constraint (total field mass/integral) rather than a full conservation law or PDE residual; it is a proof-of-concept regularizer, not a physically rigorous constraint.
