@@ -86,7 +86,7 @@ n_samples = 3000        # number of synthetic Burgers' trajectories
 train_fraction = 0.8
 epochs = 50              # training epochs per model variant
 lambda_phys = 0.1        # physics-penalty weight for the regularized FM variant
-seed = 42
+seed = 7
 ```
 
 ### 4) Outputs
@@ -96,7 +96,7 @@ All tables and figures are generated inline in the notebook.
 
 ## 📊 Results
 
-*(seed = 42, 3000 synthetic samples, 2400 train / 600 test, 50 epochs per model)*
+*(seed = 7, 3000 synthetic samples, 2400 train / 600 test, 50 epochs per model)*
 
 ### Example data: initial conditions and evolved Burgers' states
 
